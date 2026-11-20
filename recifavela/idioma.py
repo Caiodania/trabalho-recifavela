@@ -3,16 +3,38 @@
 O Streamlit serve um ``index.html`` com ``<html lang="en">``. Com isso, navegadores com tradução
 automática (como o Chrome) acham que o site está em inglês e "traduzem" um texto que já está em
 português ("Fotografe um resíduo" vira "Fotografe uma destruição"), e leitores de tela leem o
-conteúdo com pronúncia de inglês. Este módulo ajusta esse arquivo uma única vez: declara o idioma
-``pt-BR`` e desliga a tradução automática. O Streamlit lê o arquivo do disco a cada acesso, então
-o ajuste vale a partir do carregamento seguinte da página.
+conteúdo com pronúncia de inglês. A correção é feita em duas camadas:
+
+1. :func:`ajustar_index_html_uma_vez` grava ``pt-BR`` e o aviso "não traduzir" no próprio
+   ``index.html`` (vale desde o carregamento da página; funciona quando a instalação do
+   Streamlit permite escrita, como no computador local).
+2. :func:`declarar_na_pagina` faz o mesmo na página já aberta, via JavaScript (funciona também
+   onde a instalação é somente leitura, como no Streamlit Community Cloud).
 """
 
+import functools
 import sys
 from pathlib import Path
 
+import streamlit as st
+
 HTML_PORTUGUES = '<html lang="pt-BR" translate="no">'
 META_SEM_TRADUCAO = '<meta name="google" content="notranslate" />'
+
+_SCRIPT_PORTUGUES = """<script>
+(function () {
+  var raiz = document.documentElement;
+  raiz.lang = "pt-BR";
+  raiz.setAttribute("translate", "no");
+  raiz.classList.add("notranslate");
+  if (!document.querySelector('meta[name="google"][content="notranslate"]')) {
+    var meta = document.createElement("meta");
+    meta.name = "google";
+    meta.content = "notranslate";
+    document.head.appendChild(meta);
+  }
+})();
+</script>"""
 
 
 def caminho_index_html() -> Path:
@@ -47,3 +69,14 @@ def ajustar_index_html(caminho: Path | None = None) -> bool:
         return False
     print(f"[recifavela] {caminho} marcado como pt-BR (sem tradução automática)", file=sys.stderr)
     return True
+
+
+@functools.cache
+def ajustar_index_html_uma_vez() -> bool:
+    """Tenta o ajuste do ``index.html`` só uma vez por processo (o app roda a cada interação)."""
+    return ajustar_index_html()
+
+
+def declarar_na_pagina() -> None:
+    """Marca a página aberta como ``pt-BR`` e sem tradução automática (elemento invisível)."""
+    st.html(_SCRIPT_PORTUGUES, unsafe_allow_javascript=True)

@@ -8,7 +8,7 @@ import streamlit as st
 from recifavela import idioma, projeto, ui
 
 # Declara a página em português para o navegador não "traduzir" o site (ver recifavela/idioma.py).
-idioma.ajustar_index_html()
+idioma.ajustar_index_html_uma_vez()
 
 st.set_page_config(
     page_title="ReciFavela · Descarte Certo",
@@ -37,5 +37,6 @@ with st.sidebar:
     )
     st.divider()
     st.caption(f"Protótipo acadêmico · {projeto.linha_academica()}")
+    idioma.declarar_na_pagina()
 
 pagina.run()
