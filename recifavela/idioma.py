@@ -8,6 +8,7 @@ conteúdo com pronúncia de inglês. Este módulo ajusta esse arquivo uma única
 o ajuste vale a partir do carregamento seguinte da página.
 """
 
+import sys
 from pathlib import Path
 
 HTML_PORTUGUES = '<html lang="pt-BR" translate="no">'
@@ -41,6 +42,8 @@ def ajustar_index_html(caminho: Path | None = None) -> bool:
         if ajustado == original:
             return False
         caminho.write_text(ajustado, encoding="utf-8")
-    except OSError:
+    except OSError as erro:
+        print(f"[recifavela] não foi possível marcar {caminho} como pt-BR: {erro}", file=sys.stderr)
         return False
+    print(f"[recifavela] {caminho} marcado como pt-BR (sem tradução automática)", file=sys.stderr)
     return True
