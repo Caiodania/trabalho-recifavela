@@ -98,7 +98,9 @@ na `main` atualiza o site automaticamente.
 - No endereço publicado (HTTPS), a câmera do celular funciona direto pelo navegador.
 - O Streamlit declara as páginas como inglês (`lang="en"`), o que faz o Chrome "traduzir" o
   site, que já está em português. O `recifavela/idioma.py` corrige isso declarando `pt-BR` e
-  desligando a tradução automática.
+  desligando a tradução automática. Divulgue sempre o endereço principal acima: o link interno
+  (`…streamlit.app/~/+/`) ainda pode ser traduzido por navegadores que traduzem inglês
+  automaticamente, porque a decisão de traduzir acontece antes de o app carregar.
 
 ## Validação do protótipo
 
