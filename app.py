@@ -5,7 +5,10 @@ Execute com:  streamlit run app.py
 
 import streamlit as st
 
-from recifavela import projeto, ui
+from recifavela import idioma, projeto, ui
+
+# Declara a página em português para o navegador não "traduzir" o site (ver recifavela/idioma.py).
+idioma.ajustar_index_html()
 
 st.set_page_config(
     page_title="ReciFavela · Descarte Certo",

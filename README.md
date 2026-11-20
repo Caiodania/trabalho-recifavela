@@ -84,6 +84,8 @@ set RECIFAVELA_MODELO=openai/clip-vit-base-patch16
 
 ## Publicação (Streamlit Community Cloud)
 
+**Site publicado:** <https://recifavela-descarte-certo.streamlit.app>
+
 O site é publicado gratuitamente no [Streamlit Community Cloud](https://share.streamlit.io), a
 partir deste repositório: branch `main`, arquivo principal `app.py`, Python 3.13. Cada `git push`
 na `main` atualiza o site automaticamente.
@@ -94,6 +96,9 @@ na `main` atualiza o site automaticamente.
 - Depois de um período sem acessos, o app "dorme"; o primeiro acesso seguinte leva alguns minutos
   para acordar e baixar o modelo de novo.
 - No endereço publicado (HTTPS), a câmera do celular funciona direto pelo navegador.
+- O Streamlit declara as páginas como inglês (`lang="en"`), o que faz o Chrome "traduzir" o
+  site, que já está em português. O `recifavela/idioma.py` corrige isso declarando `pt-BR` e
+  desligando a tradução automática.
 
 ## Validação do protótipo
 
@@ -155,6 +160,7 @@ recifavela/
   config.py                # modelo de visão computacional usado
   imagem.py                # abertura e ajuste das fotos
   cache.py                 # cache do modelo no Streamlit
+  idioma.py                # declara a página em português (evita tradução automática)
 assets/                    # logotipo
 apresentacao/              # slides da apresentação (PowerPoint)
 tests/                     # testes automatizados (pytest)
