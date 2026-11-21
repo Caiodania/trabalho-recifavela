@@ -164,7 +164,8 @@ recifavela/
   cache.py                 # cache do modelo no Streamlit
   idioma.py                # declara a página em português (evita tradução automática)
 assets/                    # logotipo
-apresentacao/              # slides da apresentação (PowerPoint)
+apresentacao/              # slides (PowerPoint) e vídeo de demonstração (MP4)
+video/                     # projeto Remotion que gera o vídeo de demonstração
 tests/                     # testes automatizados (pytest)
 avaliar.py                 # validação pela linha de comando
 validacao/
