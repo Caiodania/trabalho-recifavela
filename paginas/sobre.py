@@ -72,7 +72,7 @@ with st.container(border=True, key="cartao_12"):
     m3.metric("Protocolo simulado · 30 fotos", "93,3%", delta="28 de 30", border=True)
 
 with st.container(border=True, key="cartao_13"):
-    ui.secao("👩🏽‍💻", "Equipe")
+    ui.secao("👥", "Equipe")
     ui.equipe()
     orientacao = f" — Orientação: {projeto.ORIENTACAO}" if projeto.ORIENTACAO else ""
     st.caption(projeto.linha_academica() + orientacao)

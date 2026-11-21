@@ -149,10 +149,6 @@ div[class*="st-key-cartao"] {{
   width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; color: #fff;
   font-weight: 700; font-family: Poppins, sans-serif; background: linear-gradient(135deg, {VERDE}, #2F8A5F);
 }}
-.rf-selo {{
-  display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px;
-  background: #FCEBDD; color: #8A4416; font-weight: 700; font-size: .85rem; margin-bottom: 10px;
-}}
 .rf-rodape {{
   margin-top: 36px; padding: 18px 0 6px; border-top: 1px solid #E3DCD0; color: {TEXTO_SUAVE}; font-size: .84rem;
   display: flex; flex-wrap: wrap; gap: 6px 24px; justify-content: space-between;
@@ -389,8 +385,7 @@ def equipe() -> None:
         for n in projeto.EQUIPE
     )
     st.html(
-        f"""<div class="rf-selo">👩‍🔬 Mulheres na engenharia</div>
-<p style="margin:0 0 12px;color:#33403B">{html.escape(projeto.APRESENTACAO_EQUIPE)}</p>
+        f"""<p style="margin:0 0 12px;color:#33403B">{html.escape(projeto.APRESENTACAO_EQUIPE)}</p>
 <div class="rf-equipe">{pessoas}</div>"""
     )
 

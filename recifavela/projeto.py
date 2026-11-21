@@ -15,7 +15,7 @@ ORIENTACAO = ""  # ex.: "Prof.ª Dra. Fulana de Tal"
 ANO = 2026
 
 APRESENTACAO_EQUIPE = (
-    "Projeto idealizado e desenvolvido por mulheres na engenharia do Instituto Mauá de Tecnologia, "
+    "Projeto desenvolvido por estudantes de Engenharia do Instituto Mauá de Tecnologia, "
     "unindo tecnologia e impacto social em parceria com a cooperativa de reciclagem ReciFavela."
 )
 
