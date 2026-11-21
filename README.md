@@ -88,7 +88,8 @@ set RECIFAVELA_MODELO=openai/clip-vit-base-patch16
 
 O site é publicado gratuitamente no [Streamlit Community Cloud](https://share.streamlit.io), a
 partir deste repositório: branch `main`, arquivo principal `app.py`, Python 3.13. Cada `git push`
-na `main` atualiza o site automaticamente.
+na `main` atualiza o site automaticamente. Mudanças nos módulos de `recifavela/` (como `ui.py` ou
+`projeto.py`) só aparecem depois de reiniciar o app no painel: *Manage app → ⋮ → Reboot app*.
 
 - O `requirements.txt` instala o PyTorch **somente para CPU**, evitando baixar as bibliotecas de
   GPU, que o servidor não usa.
