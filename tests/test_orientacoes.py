@@ -1,5 +1,3 @@
-"""Testes das regras de reciclabilidade e das orientações."""
-
 import pytest
 
 from recifavela.orientacoes import CATEGORIAS, MATERIAIS, Situacao, avaliar

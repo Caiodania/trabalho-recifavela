@@ -1,13 +1,4 @@
-"""Base de conhecimento: reciclabilidade, preparo e descarte de cada material.
-
-Cada material tem:
-- passos de preparo padrão (valem quando o resíduo é reciclável);
-- perguntas sobre as condições do resíduo. Uma resposta "sim" pode mudar a
-  situação (ex.: de reciclável para não reciclável) e acrescenta uma orientação.
-
-As cores das lixeiras seguem a Resolução CONAMA nº 275/2001.
-"""
-
+# Regras de cada material. Cores das lixeiras: Resolução CONAMA 275/2001.
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -17,8 +8,7 @@ PONTO_DE_ENTREGA = "na ReciFavela ou em um Ponto de Entrega Voluntária (PEV) da
 
 
 class Situacao(IntEnum):
-    """Situação do resíduo. Valores maiores são mais restritivos."""
-
+    # quanto maior, mais restritivo
     RECICLAVEL = 0
     ATENCAO = 1
     NAO_RECICLAVEL = 2
@@ -51,8 +41,8 @@ class Situacao(IntEnum):
 class Pergunta:
     id: str
     texto: str
-    situacao: Situacao  # situação resultante quando a resposta é "sim"
-    orientacao: str  # orientação exibida quando a resposta é "sim"
+    situacao: Situacao  # vale quando a resposta é "sim"
+    orientacao: str
     exemplo: str = ""
 
 
@@ -72,8 +62,8 @@ class Material:
 class Avaliacao:
     material: Material
     situacao: Situacao
-    alertas: tuple[tuple[Situacao, str], ...]  # orientações vindas das respostas
-    preparo: tuple[str, ...]  # vazio quando o resíduo não deve ir para a reciclagem
+    alertas: tuple[tuple[Situacao, str], ...]
+    preparo: tuple[str, ...]
     descarte: str
 
 
@@ -316,11 +306,11 @@ CATEGORIAS: tuple[str, ...] = tuple(MATERIAIS)
 
 
 def avaliar(chave_material: str, respostas: dict[str, bool] | None = None) -> Avaliacao:
-    """Combina o material identificado com as respostas sobre as condições do resíduo."""
     material = MATERIAIS[chave_material]
     respostas = respostas or {}
 
     marcadas = [p for p in material.perguntas if respostas.get(p.id)]
+    # vale a resposta mais restritiva
     situacao = max((p.situacao for p in marcadas), default=Situacao.RECICLAVEL)
     alertas = tuple(
         (p.situacao, p.orientacao) for p in sorted(marcadas, key=lambda p: p.situacao, reverse=True)

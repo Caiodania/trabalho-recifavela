@@ -1,5 +1,3 @@
-"""Cálculo das métricas da validação do protótipo (meta: 80% de acerto em 30 resíduos)."""
-
 from __future__ import annotations
 
 import math
@@ -15,7 +13,7 @@ META_ACERTO = 0.80
 TOTAL_PREVISTO = 30
 EXTENSOES_IMAGEM = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 
-# Palavras que, no nome do arquivo ou da pasta, indicam a categoria correta.
+# palavras no nome do arquivo/pasta que indicam o material
 _PALAVRAS = {
     "plastico": ("plastico", "plastic", "pet"),
     "papel": ("papel", "papelao", "paper", "cardboard"),
@@ -30,9 +28,8 @@ def _normalizar(texto: str) -> str:
 
 
 def inferir_categoria(caminho: str | Path) -> str | None:
-    """Deduz a categoria correta pelo nome do arquivo ou da pasta (ex.: vidro/garrafa.jpg, papel_03.jpg)."""
     partes = [_normalizar(p) for p in Path(caminho).parts]
-    for parte in reversed(partes):  # o nome do arquivo tem prioridade sobre as pastas
+    for parte in reversed(partes):  # nome do arquivo primeiro, depois as pastas
         for token in _tokens(parte):
             for categoria, palavras in _PALAVRAS.items():
                 if token in palavras:
@@ -60,12 +57,10 @@ class Resumo:
 
     @property
     def acertos_necessarios(self) -> int:
-        """Acertos mínimos para a meta considerando o total testado."""
         return math.ceil(META_ACERTO * self.total - 1e-9)
 
 
 def resumir(correta: pd.Series, sistema: pd.Series) -> Resumo:
-    """Compara a classificação correta com a do sistema (linhas sem categoria correta são ignoradas)."""
     dados = pd.DataFrame({"correta": correta, "sistema": sistema}).dropna()
     total = len(dados)
     acertos = int((dados["correta"] == dados["sistema"]).sum())

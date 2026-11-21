@@ -6,3 +6,4 @@ __pycache__/
 # fotos e resultados da validação (podem conter imagens pessoais)
 validacao/fotos/
 validacao/resultados_*.csv
+entrega/

@@ -1,12 +1,3 @@
-"""Classificação do material do resíduo com visão computacional.
-
-Usa o modelo CLIP (OpenAI) em modo *zero-shot*: a imagem é comparada com
-descrições em texto de cada material ("a photo of a plastic bottle", "a photo of
-a cardboard box"...). Não é preciso treinar o modelo com fotos próprias — basta
-ajustar as descrições abaixo se algum tipo de resíduo for confundido com
-frequência nos testes.
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -18,8 +9,7 @@ from transformers import CLIPModel, CLIPProcessor
 from .config import MODELO_PADRAO
 from .imagem import abrir_imagem, quadrada
 
-# Descrições (em inglês, idioma em que o CLIP foi treinado) dos objetos mais
-# comuns de cada categoria. A média das descrições forma o "protótipo" do material.
+# em inglês porque o CLIP foi treinado em inglês
 DESCRICOES: dict[str, list[str]] = {
     "plastico": [
         "a plastic bottle",
@@ -105,11 +95,11 @@ TEMPLATES = (
 class Resultado:
     categoria: str
     confianca: float
-    probabilidades: dict[str, float]  # da mais provável para a menos provável
+    probabilidades: dict[str, float]
 
 
 def _como_tensor(saida) -> torch.Tensor:
-    # Versões novas do transformers podem devolver um objeto em vez do tensor.
+    # no transformers 5 vem um objeto em vez do tensor
     return saida if isinstance(saida, torch.Tensor) else saida.pooler_output
 
 
@@ -134,10 +124,8 @@ class ClassificadorMateriais:
                 emb = emb / emb.norm(dim=-1, keepdim=True)
                 media = emb.mean(dim=0)
                 descricoes.append(media / media.norm())
-            # Média das descrições: equivale a tirar a média da similaridade da foto
-            # com cada descrição do material.
             prototipos.append(torch.stack(descricoes).mean(dim=0))
-        self._prototipos = torch.stack(prototipos)  # [n_categorias, dim]
+        self._prototipos = torch.stack(prototipos)
 
     @torch.inference_mode()
     def _embeddings_imagens(self, imagens: list[Image.Image]) -> torch.Tensor:
@@ -148,14 +136,14 @@ class ClassificadorMateriais:
     @torch.inference_mode()
     def classificar_lote(self, imagens: list[bytes | Image.Image]) -> list[Resultado]:
         imagens = [abrir_imagem(img) for img in imagens]
-        # Duas vistas por foto: recorte central (padrão do CLIP) e foto inteira com bordas.
+        # recorte central + foto inteira com bordas
         emb_centro = self._embeddings_imagens(imagens)
         emb_inteira = self._embeddings_imagens([quadrada(img) for img in imagens])
         emb = emb_centro + emb_inteira
         emb = emb / emb.norm(dim=-1, keepdim=True)
 
         escala = self.modelo.logit_scale.exp()
-        logits = escala * emb @ self._prototipos.T  # [n_imagens, n_categorias]
+        logits = escala * emb @ self._prototipos.T
         probs = logits.softmax(dim=1).cpu()
 
         resultados = []

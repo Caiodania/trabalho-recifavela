@@ -1,5 +1,3 @@
-"""Página principal: envio da foto e resultado da análise."""
-
 import hashlib
 
 import streamlit as st
@@ -10,7 +8,7 @@ from recifavela.cache import classificar
 from recifavela.imagem import abrir_imagem
 from recifavela.orientacoes import CATEGORIAS, MATERIAIS, avaliar
 
-LIMIAR_CONFIANCA = 0.60  # abaixo disso o usuário é avisado de que a análise ficou em dúvida
+LIMIAR_CONFIANCA = 0.60  # abaixo disso avisamos que a análise ficou em dúvida
 
 
 def nome_material(chave: str) -> str:
@@ -22,7 +20,7 @@ ui.cabecalho()
 
 col_foto, col_resultado = st.columns([5, 7], gap="large")
 
-# ---------------------------------------------------------------- 1. Foto
+# 1. foto
 with col_foto:
     with st.container(border=True, key="cartao_foto"):
         ui.secao(1, "Foto do resíduo", "Envie uma imagem ou use a câmera")
@@ -59,7 +57,7 @@ with col_foto:
             "💡 **Dica:** fotografe um item por vez, de perto, com boa luz e, se possível, sobre um fundo liso."
         )
 
-# ---------------------------------------------------------------- 2. Resultado
+# 2. resultado
 with col_resultado:
     with st.container(border=True, key="cartao_2"):
         ui.secao(2, "Material identificado", "Análise feita por visão computacional")
@@ -100,7 +98,7 @@ with col_resultado:
                 ui.barras_probabilidades(resultado.probabilidades)
 
     if imagem is not None:
-        # ------------------------------------------------------------ 3. Condições
+        # 3. condições
         with st.container(border=True, key="cartao_3"):
             ui.secao(3, "Condições do resíduo", "Marque o que se aplica — o resultado se ajusta às respostas")
             respostas = {
@@ -108,7 +106,7 @@ with col_resultado:
                 for p in material.perguntas
             }
 
-        # ------------------------------------------------------------ 4. Orientações
+        # 4. orientações
         avaliacao = avaliar(chave, respostas)
         with st.container(border=True, key="cartao_4"):
             ui.secao(4, "Resultado e orientações")

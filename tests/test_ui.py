@@ -1,5 +1,3 @@
-"""Testes dos utilitários de formatação da interface."""
-
 from recifavela.ui import pct, texto_html
 
 

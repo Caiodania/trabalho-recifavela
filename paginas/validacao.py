@@ -1,5 +1,3 @@
-"""Página de validação: compara a classificação do sistema com a classificação correta."""
-
 import base64
 import hashlib
 import io

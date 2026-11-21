@@ -1,13 +1,7 @@
-"""ReciFavela · Descarte Certo — ponto de entrada do site.
-
-Execute com:  streamlit run app.py
-"""
-
 import streamlit as st
 
 from recifavela import idioma, projeto, ui
 
-# Declara a página em português para o navegador não "traduzir" o site (ver recifavela/idioma.py).
 idioma.ajustar_index_html_uma_vez()
 
 st.set_page_config(

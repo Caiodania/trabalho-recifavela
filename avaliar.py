@@ -1,13 +1,4 @@
-"""Validação do protótipo pela linha de comando.
-
-Classifica todas as fotos de uma pasta e compara com a classificação correta,
-obtida de uma planilha (gabarito) ou do nome do arquivo/pasta.
-
-Exemplos:
-    python avaliar.py validacao/fotos
-    python avaliar.py validacao/fotos --gabarito validacao/gabarito.csv
-"""
-
+# Uso: python avaliar.py validacao/fotos [--gabarito validacao/gabarito.csv]
 from __future__ import annotations
 
 import argparse
@@ -23,7 +14,6 @@ from recifavela.orientacoes import CATEGORIAS
 
 
 def ler_gabarito(caminho: Path) -> dict[str, str]:
-    """Lê o gabarito (colunas: arquivo; categoria_correta). Aceita separador ; ou ,."""
     df = pd.read_csv(caminho, sep=None, engine="python", encoding="utf-8-sig", dtype=str)
     df.columns = [c.strip().lower() for c in df.columns]
     gabarito = {}

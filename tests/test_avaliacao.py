@@ -1,5 +1,3 @@
-"""Testes das métricas da validação (meta de 80% em 30 resíduos)."""
-
 import pandas as pd
 import pytest
 

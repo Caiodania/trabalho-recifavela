@@ -1,8 +1,3 @@
-"""Carregamento do modelo e classificação com cache do Streamlit (compartilhado entre páginas).
-
-O modelo (torch/transformers) só é importado na primeira análise, para a página abrir rápido.
-"""
-
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -17,6 +12,7 @@ if TYPE_CHECKING:
     show_spinner="Carregando o modelo de visão computacional… (na primeira execução ele é baixado e pode levar alguns minutos)"
 )
 def obter_classificador() -> ClassificadorMateriais:
+    # import aqui dentro para a página abrir rápido; o torch só carrega na primeira análise
     from .classificador import ClassificadorMateriais
 
     return ClassificadorMateriais()

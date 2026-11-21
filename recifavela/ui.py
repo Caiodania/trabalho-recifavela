@@ -1,9 +1,3 @@
-"""Identidade visual do site: estilos globais e componentes em HTML.
-
-Cores da marca: verde (sustentabilidade), areia (fundo acolhedor) e laranja-terracota
-(o sol de Recife). As cores das lixeiras seguem a Resolução CONAMA nº 275/2001.
-"""
-
 from __future__ import annotations
 
 import base64
@@ -22,7 +16,7 @@ TERRACOTA = "#D9773E"
 TEXTO_SUAVE = "#5B6863"
 
 ESTILO_SITUACAO = {
-    # fundo, borda, texto do título
+    # fundo, borda, título
     Situacao.RECICLAVEL: ("#E7F4EC", "#A9D5BB", "#17573F"),
     Situacao.ATENCAO: ("#FFF4E0", "#F0C483", "#8A5300"),
     Situacao.NAO_RECICLAVEL: ("#FDECEA", "#F0B4AD", "#A1271B"),
@@ -176,17 +170,16 @@ def aplicar_estilo() -> None:
 
 
 def pct(valor: float, casas: int = 0) -> str:
-    """Porcentagem no formato brasileiro (vírgula decimal)."""
     return f"{100 * valor:.{casas}f}%".replace(".", ",")
 
 
 def texto_html(texto: str) -> str:
-    """Escapa o texto e converte **negrito** do Markdown em <b>."""
+    # escapa o HTML e mantém o **negrito**
     return re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", html.escape(texto, quote=False))
 
 
 def _svg_img(svg: str, largura: int, altura: int) -> str:
-    """O st.html remove <svg> embutido; por isso o desenho vai como imagem (data URI)."""
+    # o st.html remove <svg>, então vai como imagem
     codigo = base64.b64encode(svg.encode()).decode()
     return f'<img src="data:image/svg+xml;base64,{codigo}" width="{largura}" height="{altura}" alt="" style="flex:none">'
 
@@ -316,7 +309,6 @@ def cartao_situacao(situacao: Situacao) -> None:
 
 
 def destaque(icone: str, titulo: str, texto: str, tom: Situacao = Situacao.RECICLAVEL) -> None:
-    """Faixa de destaque no estilo do veredito (verde, laranja, vermelho ou roxo)."""
     fundo, borda, cor = ESTILO_SITUACAO[tom]
     st.html(
         f"""<div class="rf-veredito" style="--fundo:{fundo};--borda:{borda};--texto:{cor}">

@@ -1,5 +1,3 @@
-"""Página institucional: objetivo, funcionamento, tecnologia, validação e equipe."""
-
 import streamlit as st
 
 from recifavela import projeto, ui
